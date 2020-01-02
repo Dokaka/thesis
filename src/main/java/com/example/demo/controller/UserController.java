@@ -1,0 +1,60 @@
+package com.example.demo.controller;
+
+import com.example.demo.dto.NotificationDto;
+import com.example.demo.dto.UserDto;
+import com.example.demo.request.CreateUserRequest;
+import com.example.demo.response.CreateUserResponse;
+import com.example.demo.service.IUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/users")
+@Api(value = "Users APIs")
+public class UserController {
+    @Autowired
+    private IUserService userService;
+
+    @ApiOperation(value = "Get list of users", response = UserDto.class)
+    @ApiResponses({
+            @ApiResponse(code = 400, message="Bad request"),
+            @ApiResponse(code = 500, message="Internal Server Error"),
+    })
+    @GetMapping()
+    public ResponseEntity<?> getAllUsers(){
+        List<UserDto> userDtoList = userService.getAllUsers();
+        return ResponseEntity.ok(userDtoList);
+    }
+    @ApiOperation(value="Get a user by phone", response = UserDto.class)
+    @ApiResponses({
+            @ApiResponse(code = 404, message="Not found"),
+            @ApiResponse(code = 500, message="Internal Server Error"),
+    })
+    @GetMapping("/phone/{phone}")
+    public ResponseEntity<?> getUserByPhone(@PathVariable String phone){
+        UserDto userDto = userService.getUserByPhone(phone);
+        return ResponseEntity.ok(userDto);
+    }
+    @ApiOperation(value="Create a user", response = UserDto.class)
+    @ApiResponses({
+            @ApiResponse(code = 404, message="Not found"),
+            @ApiResponse(code = 500, message="Internal Server Error"),
+    })
+    @PostMapping()
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest){
+        UserDto userDTO = new UserDto();
+        BeanUtils.copyProperties(createUserRequest,userDTO);
+        CreateUserResponse createUserResponse = new CreateUserResponse();
+        BeanUtils.copyProperties(userService.createUser(userDTO),createUserResponse);
+        return ResponseEntity.ok(createUserResponse);
+    }
+
+}
