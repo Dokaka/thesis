@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface IUserRepository extends CrudRepository<UserEntity,Long> {
     UserEntity findByPhone(String phone);
+    UserEntity findByFullname(String fullname);
     List<UserEntity> findAll();
 }
