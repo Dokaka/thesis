@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.NotificationDto;
 import com.example.demo.dto.UserDto;
-import com.example.demo.entity.UserEntity;
 import com.example.demo.request.CreateUserRequest;
 import com.example.demo.response.CreateUserResponse;
 import com.example.demo.service.IUserService;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,6 +26,7 @@ public class UserController {
     @ApiOperation(value = "Get list of users", response = UserDto.class)
     @ApiResponses({
             @ApiResponse(code = 400, message="Bad request"),
+            @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
     @GetMapping()
@@ -37,6 +36,7 @@ public class UserController {
     }
     @ApiOperation(value="Get a user by phone", response = UserDto.class)
     @ApiResponses({
+            @ApiResponse(code = 400, message="Bad request"),
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
@@ -47,6 +47,7 @@ public class UserController {
     }
     @ApiOperation(value="Create a user", response = UserDto.class)
     @ApiResponses({
+            @ApiResponse(code = 400, message="Bad request"),
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
@@ -60,9 +61,11 @@ public class UserController {
     }
     @ApiOperation(value="Delete a user", response = UserDto.class)
     @ApiResponses({
+            @ApiResponse(code = 400, message="Bad request"),
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
@@ -71,8 +74,10 @@ public class UserController {
     @ApiOperation(value="Update info of a user", response = UserDto.class)
     @ApiResponses({
             @ApiResponse(code = 400, message="Bad request"),
+            @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
+
     @PutMapping("/{fullname}")
     public ResponseEntity<?> updateUser(@RequestBody CreateUserRequest createUserRequest, @PathVariable String fullname) {
         UserDto userDto = userService.updateUser(createUserRequest, fullname);
@@ -80,10 +85,12 @@ public class UserController {
     }
     @ApiOperation(value="Login by user", response = UserDto.class)
     @ApiResponses({
+            @ApiResponse(code = 400, message="Bad request"),
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
-    @GetMapping("/login/{phone}/{password}")
+
+    @GetMapping("/login/{phone}/password/{password}")
     public ResponseEntity<?> login(@PathVariable String phone,@PathVariable String password)
     {
         UserDto userDto = userService.login(phone,password);
@@ -91,14 +98,14 @@ public class UserController {
     }
     @ApiOperation(value="Register by user", response = UserDto.class)
     @ApiResponses({
+            @ApiResponse(code = 400, message="Bad request"),
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody CreateUserRequest createUserRequest){
         if(userService.checkUser(createUserRequest)){
-//            UserDto userDTO = new UserDto();
-//            BeanUtils.copyProperties(createUserRequest,userDTO);
             CreateUserResponse createUserResponse = new CreateUserResponse();
             BeanUtils.copyProperties(userService.registerUser(createUserRequest),createUserResponse);
             return ResponseEntity.ok(createUserResponse);

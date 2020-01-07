@@ -73,11 +73,6 @@ public class UserService implements IUserService {
             System.out.println("can't update");
         }
         UserDto userDto = new UserDto();
-//        try {
-//            userRepository.save(userEntity);
-//        } catch (Exception ex) {
-//            throw new InternalServerException("Update Error");
-//        }
         BeanUtils.copyProperties(userRepository.save(userEntity),userDto);
         return userDto;
     }
