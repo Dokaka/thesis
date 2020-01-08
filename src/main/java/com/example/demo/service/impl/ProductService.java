@@ -4,6 +4,7 @@ import com.example.demo.dto.ProductDto;
 
 import com.example.demo.entity.ProductEntity;
 //import com.example.demo.entity.ProductSizeEntity;
+import com.example.demo.entity.ProductSizeEntity;
 import com.example.demo.repository.IProductRepository;
 import com.example.demo.service.IProductService;
 
@@ -29,19 +30,25 @@ public class ProductService implements IProductService {
         }
         return productDtoList;
     }
-//    @Override
-//    public ProductDto createProduct(ProductDto productDto){
-//        ProductEntity productEntity = new ProductEntity();
-//        BeanUtils.copyProperties(productDto,productEntity);
-//        ProductSizeEntity productSizeEntity = new ProductSizeEntity();
-//        productSizeEntity.setSize(42);
-//        ProductSizeEntity productSizeEntity2 = new ProductSizeEntity();
-//        productSizeEntity.setSize(43);
-//        productEntity.addSize(productSizeEntity);
-//        productEntity.addSize(productSizeEntity2);
-//        ProductDto m_productDto = new ProductDto();
-//        BeanUtils.copyProperties(productRepository.save(productEntity),m_productDto);
-//        return m_productDto;
-//    }
+    @Override
+    public ProductDto createProduct(ProductDto productDto){
+
+        ProductEntity productEntity = new ProductEntity();
+        BeanUtils.copyProperties(productDto,productEntity);
+
+        ProductSizeEntity productSizeEntity = new ProductSizeEntity();
+        productSizeEntity.setSize(42);
+
+        ProductSizeEntity productSizeEntity2 = new ProductSizeEntity();
+        productSizeEntity.setSize(43);
+
+        productEntity.addSize(productSizeEntity);
+        productEntity.addSize(productSizeEntity2);
+
+        ProductDto m_productDto = new ProductDto();
+        BeanUtils.copyProperties(productRepository.save(productEntity),m_productDto);
+
+        return m_productDto;
+    }
 
 }
