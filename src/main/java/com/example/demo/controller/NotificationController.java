@@ -29,14 +29,12 @@ public class NotificationController {
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
     @GetMapping()
-//    public List<NotificationDto> getAllNotifications(){
-//        List<NotificationDto> notificationDtoList = notificationService.getAllNotifications();
-//        return notificationDtoList;
-//    }
     public ResponseEntity<?> getAllNotifications(){
         List<NotificationDto> notificationDtoList = notificationService.getAllNotifications();
         return ResponseEntity.ok(notificationDtoList);
     }
+
+
 
 
 }

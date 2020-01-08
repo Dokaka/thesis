@@ -1,15 +1,33 @@
 package com.example.demo.request;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class CreateProductRequest {
-    private String name_prod;
+
+    @NotNull(message = "nameProduct is required")
+    @NotEmpty(message = "nameProduct is required")
+    @ApiModelProperty(
+            example="adidas555",
+            notes="nameProduct cannot be empty",
+            required=true
+    )
+    private String nameProduct;
+
     private int price;
-    private String url_Image_prod;
+
+    private String urlImageProd;
+
     private String description;
-    private int order_id;
+
+    private int orderId;
+
+    private String listSize;
 }

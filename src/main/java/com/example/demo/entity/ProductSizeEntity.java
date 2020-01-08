@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.ProductInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,39 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+
+
+@SqlResultSetMappings(
+        value = {
+                @SqlResultSetMapping(
+                        name = "productInfo",
+                        classes = @ConstructorResult(
+                                targetClass = ProductInfo.class,
+                                columns = {
+                                        @ColumnResult(name = "id", type = Long.class),
+                                        @ColumnResult(name = "nameProduct", type = String.class),
+                                        @ColumnResult(name = "price", type = Integer.class),
+                                        @ColumnResult(name = "urlImageProd", type = String.class),
+                                        @ColumnResult(name = "description", type = String.class),
+                                        @ColumnResult(name = "orderId", type = Integer.class),
+                                        @ColumnResult(name = "listSize", type = String.class)
+                                }
+                        )
+                )
+        }
+)
+@NamedNativeQuery(
+        name = "getProductInfo",
+        resultSetMapping = "productInfo",
+        query = "SELECT prd.*, \n" +
+                "(\n" +
+                "\tSELECT JSON_ARRAYAGG(JSON_OBJECT('id',pz.id,'size',pz.size,'product_id',pz.product_id)) \n" +
+                "\tFROM product_size pz \n" +
+                "    WHERE pz.product_id = prd.id\n" +
+                ") as list_size \n" +
+                "FROM products prd \n" +
+                "WHERE prd.id = ?1"
+)
 
 @Setter
 @Getter
@@ -16,14 +50,13 @@ import java.util.List;
 
 public class ProductSizeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name = "id")
     private long id;
-
     private  int size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ProductEntity product;
-
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private ProductEntity productId;
 
 }

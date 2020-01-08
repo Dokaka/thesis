@@ -40,6 +40,7 @@ public class UserController {
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
+
     @GetMapping("/phone/{phone}")
     public ResponseEntity<?> getUserByPhone(@PathVariable String phone){
         UserDto userDto = userService.getUserByPhone(phone);
@@ -51,6 +52,7 @@ public class UserController {
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
+
     @PostMapping()
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest){
         UserDto userDTO = new UserDto();

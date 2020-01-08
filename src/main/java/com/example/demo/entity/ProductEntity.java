@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.ProductInfo;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
@@ -15,27 +17,29 @@ public class ProductEntity {
     @GeneratedValue
     @Column(nullable = false, unique = true)
     private Long id;
-
-    private String name_prod;
+    @Column(unique = true)
+    private String nameProduct;
     private int price;
-    private String url_Image_prod;
+    private String urlImageProd;
     private String description;
-    private int order_id;
+    private int orderId;
+    private String listSize;
 
-    @OneToMany(
-            mappedBy = "product",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<ProductSizeEntity> listSize = new ArrayList<>();
-
-    public void addSize(ProductSizeEntity size) {
-        listSize.add(size);
-        size.setProduct(this);
-    }
-
-    public void removeSize(ProductSizeEntity size) {
-        listSize.remove(size);
-        size.setProduct(null);
-    }
+//
+//    @OneToMany(
+//            mappedBy = "product",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private List<ProductSizeEntity>listSizeProd = new ArrayList<>();
+//
+//    public void addSize(ProductSizeEntity size) {
+//        listSizeProd.add(size);
+//        size.set(this);
+//    }
+//
+//    public void removeSize(ProductSizeEntity size) {
+//        listSizeProd.remove(size);
+//        size.setProduct(null);
+//    }
 }

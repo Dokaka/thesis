@@ -5,6 +5,7 @@ import com.example.demo.dto.ProductDto;
 import com.example.demo.entity.ProductEntity;
 //import com.example.demo.entity.ProductSizeEntity;
 import com.example.demo.entity.ProductSizeEntity;
+import com.example.demo.exception.InternalServerException;
 import com.example.demo.repository.IProductRepository;
 import com.example.demo.service.IProductService;
 
@@ -40,15 +41,33 @@ public class ProductService implements IProductService {
         productSizeEntity.setSize(42);
 
         ProductSizeEntity productSizeEntity2 = new ProductSizeEntity();
-        productSizeEntity.setSize(43);
+        productSizeEntity2.setSize(43);
 
-        productEntity.addSize(productSizeEntity);
-        productEntity.addSize(productSizeEntity2);
+//        productEntity.addSize(productSizeEntity);
+//        productEntity.addSize(productSizeEntity2);
 
         ProductDto m_productDto = new ProductDto();
         BeanUtils.copyProperties(productRepository.save(productEntity),m_productDto);
 
         return m_productDto;
     }
+
+    @Override
+    public void deleteProduct(Long id){
+        try {
+            productRepository.deleteById(id);
+        } catch (Exception ex){
+            throw new InternalServerException("Error when delete product information");
+        }
+    }
+
+    @Override
+    public ProductDto getProductByName(String nameProduct){
+        ProductEntity productEntity = productRepository.findByNameProduct(nameProduct);
+        ProductDto productDto = new ProductDto();
+        BeanUtils.copyProperties(productEntity,productDto);
+        return productDto;
+    }
+
 
 }

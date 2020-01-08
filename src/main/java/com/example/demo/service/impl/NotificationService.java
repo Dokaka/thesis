@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class NotificationService implements INotificationService {
     @Autowired
     private INotificationRepository notificationRepository;
+
     @Override
     public List<NotificationDto> getAllNotifications(){
         List<NotificationEntity> notificationEntityList = notificationRepository.findAll();
