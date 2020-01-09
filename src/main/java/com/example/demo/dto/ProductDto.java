@@ -11,5 +11,5 @@ public class ProductDto {
     private int price;
     private String urlImageProd;
     private String description;
-    private int orderId;
+//    private int orderId;
 }

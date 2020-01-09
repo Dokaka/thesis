@@ -17,11 +17,11 @@ import java.util.List;
                         classes = @ConstructorResult(
                                 targetClass = ProductInfo.class,
                                 columns = {
-                                        @ColumnResult(name = "name_product"),
-                                        @ColumnResult(name = "price"),
-                                        @ColumnResult(name = "url_image_prod"),
-                                        @ColumnResult(name = "description"),
-                                        @ColumnResult(name = "order_id"),
+                                        @ColumnResult(name = "idPro", type = Long.class),
+                                        @ColumnResult(name = "name",type = String.class),
+                                        @ColumnResult(name = "pricePro",type = Integer.class),
+                                        @ColumnResult(name = "image",type = String.class),
+                                        @ColumnResult(name = "des",type = String.class),
                                         @ColumnResult(name = "list_size", type = String.class)
                                 }
                         )
@@ -31,7 +31,8 @@ import java.util.List;
 @NamedNativeQuery(
         name = "getProductInfo",
         resultSetMapping = "productInfo",
-        query = "SELECT prd.*, \n" +
+        query = "SELECT prd.id as idPro ,prd.name_product as name,prd.price as pricePro," +
+                "prd.url_image_prod as image , prd.description as des,\n" +
                 "(\n" +
                 "\tSELECT JSON_ARRAYAGG(JSON_OBJECT('id',pz.id,'size',pz.size)) \n" +
                 "\tFROM product_size pz \n" +
@@ -43,7 +44,8 @@ import java.util.List;
 @NamedNativeQuery(
         name = "getListProductInfo",
         resultSetMapping = "productInfo",
-        query = "SELECT prd.*, \n" +
+        query = "SELECT prd.id as idPro ,prd.name_product as name,prd.price as pricePro,prd.url_image_prod as image," +
+                "prd.description as des, \n" +
                 "(\n" +
                 "\tSELECT JSON_ARRAYAGG(JSON_OBJECT('id',pz.id,'size',pz.size)) \n" +
                 "\tFROM product_size pz \n" +

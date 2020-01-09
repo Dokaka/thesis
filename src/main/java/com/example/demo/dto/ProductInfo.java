@@ -16,20 +16,21 @@ import java.util.List;
 @NoArgsConstructor
 
 public class ProductInfo {
-
+    private Long id;
     private String nameProduct;
     private int price;
     private String urlImageProd;
     private String description;
-    private int orderId;
+//    private int orderId;
     private List<ProductSizeDto> listSize;
 
-    public ProductInfo(String nameProduct,Integer price,String urlImageProd,String description,Integer orderId,Object listSize) {
+    public ProductInfo(Long id,String nameProduct,Integer price,String urlImageProd,String description,Object listSize) {
+        this.id = id;
+        //System.out.println("value of id is"+id);
         this.nameProduct = nameProduct;
         this.price = price;
         this.urlImageProd = urlImageProd;
         this.description = description;
-        this.orderId = orderId;
         if (listSize != null) {
             ObjectMapper mapper = new ObjectMapper();
             try {

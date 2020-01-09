@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductEntity {
     @Id
     @GeneratedValue
-    @Column(nullable = false, unique = true)
+    @Column(name = "id",nullable = false, unique = true)
     private Long id;
     @Column(name = "name_product",unique = true)
     private String nameProduct;
@@ -25,8 +25,8 @@ public class ProductEntity {
     private String urlImageProd;
     @Column(name = "description")
     private String description;
-    @Column(name = "order_id")
-    private int orderId;
+//    @Column(name = "order_id")
+//    private int orderId;
 //    @Column(name = "list_size")
 //    private String listSize;
 

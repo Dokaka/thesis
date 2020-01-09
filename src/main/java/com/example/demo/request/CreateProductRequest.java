@@ -27,6 +27,6 @@ public class CreateProductRequest {
 
     private String description;
 
-    private int orderId;
+//    private int orderId;
 
 }

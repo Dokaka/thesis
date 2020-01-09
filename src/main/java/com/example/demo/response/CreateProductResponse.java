@@ -10,6 +10,6 @@ public class CreateProductResponse {
 
     private String description;
 
-    private int orderId;
+//    private int orderId;
 
 }
