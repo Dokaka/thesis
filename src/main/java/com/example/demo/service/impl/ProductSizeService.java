@@ -8,6 +8,8 @@ import com.example.demo.service.IProductSizeSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductSizeService implements IProductSizeSevice {
     @Autowired
@@ -16,6 +18,10 @@ public class ProductSizeService implements IProductSizeSevice {
     @Override
     public ProductInfo getProductInfo(int productId){
         return productSizeRepository.getProductInfo(productId);
+    }
+    @Override
+    public List<ProductInfo> getListProductInfo(){
+        return productSizeRepository.getListProductInfo();
     }
 
 

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/productSize")
 @Api(value = "ProductSize APIs")
@@ -23,5 +25,11 @@ public class ProductSizeController {
     public ResponseEntity<?> getProductInfoById(@PathVariable int id) {
         ProductInfo productInfo = productSizeService.getProductInfo(id);
         return ResponseEntity.ok(productInfo);
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> getListProductInfo(){
+        List<ProductInfo> productInfoList = productSizeService.getListProductInfo();
+        return ResponseEntity.ok(productInfoList);
     }
 }

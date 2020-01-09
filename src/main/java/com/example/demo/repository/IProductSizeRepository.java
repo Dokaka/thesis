@@ -10,4 +10,7 @@ import java.util.List;
 public interface IProductSizeRepository extends CrudRepository<ProductSizeEntity,Long> {
     @Query(nativeQuery = true, name = "getProductInfo")
     ProductInfo getProductInfo(int productId);
+    @Query(nativeQuery = true, name = "getListProductInfo")
+    List<ProductInfo> getListProductInfo();
+
 }

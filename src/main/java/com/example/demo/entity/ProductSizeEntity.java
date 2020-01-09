@@ -33,12 +33,24 @@ import java.util.List;
         resultSetMapping = "productInfo",
         query = "SELECT prd.*, \n" +
                 "(\n" +
-                "\tSELECT JSON_ARRAYAGG(JSON_OBJECT('id',pz.id,'size',pz.size,'product_id',pz.product_id)) \n" +
+                "\tSELECT JSON_ARRAYAGG(JSON_OBJECT('id',pz.id,'size',pz.size)) \n" +
                 "\tFROM product_size pz \n" +
                 "    WHERE pz.product_id = prd.id\n" +
                 ") as list_size \n" +
                 "FROM products prd \n" +
-                "WHERE prd.id = ?"
+                "WHERE prd.id = ?1"
+)
+@NamedNativeQuery(
+        name = "getListProductInfo",
+        resultSetMapping = "productInfo",
+        query = "SELECT prd.*, \n" +
+                "(\n" +
+                "\tSELECT JSON_ARRAYAGG(JSON_OBJECT('id',pz.id,'size',pz.size)) \n" +
+                "\tFROM product_size pz \n" +
+                "    WHERE pz.product_id = prd.id\n" +
+                ") as list_size \n" +
+                "FROM products prd"
+
 )
 
 @Setter
