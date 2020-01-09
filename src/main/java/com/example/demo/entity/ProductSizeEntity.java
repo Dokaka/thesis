@@ -17,13 +17,12 @@ import java.util.List;
                         classes = @ConstructorResult(
                                 targetClass = ProductInfo.class,
                                 columns = {
-                                        @ColumnResult(name = "id", type = Long.class),
-                                        @ColumnResult(name = "nameProduct", type = String.class),
-                                        @ColumnResult(name = "price", type = Integer.class),
-                                        @ColumnResult(name = "urlImageProd", type = String.class),
-                                        @ColumnResult(name = "description", type = String.class),
-                                        @ColumnResult(name = "orderId", type = Integer.class),
-                                        @ColumnResult(name = "listSize", type = String.class)
+                                        @ColumnResult(name = "name_product"),
+                                        @ColumnResult(name = "price"),
+                                        @ColumnResult(name = "url_image_prod"),
+                                        @ColumnResult(name = "description"),
+                                        @ColumnResult(name = "order_id"),
+                                        @ColumnResult(name = "list_size", type = String.class)
                                 }
                         )
                 )
@@ -39,7 +38,7 @@ import java.util.List;
                 "    WHERE pz.product_id = prd.id\n" +
                 ") as list_size \n" +
                 "FROM products prd \n" +
-                "WHERE prd.id = ?1"
+                "WHERE prd.id = ?"
 )
 
 @Setter

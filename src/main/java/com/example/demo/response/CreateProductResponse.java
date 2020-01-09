@@ -12,5 +12,4 @@ public class CreateProductResponse {
 
     private int orderId;
 
-    private String listSize;
 }

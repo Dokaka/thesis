@@ -29,5 +29,4 @@ public class CreateProductRequest {
 
     private int orderId;
 
-    private String listSize;
 }

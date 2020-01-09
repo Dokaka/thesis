@@ -4,6 +4,7 @@ package com.example.demo.dto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +13,10 @@ import java.util.List;
 
 @Setter
 @Getter
-@Component
+@NoArgsConstructor
 
 public class ProductInfo {
-    private long id;
+
     private String nameProduct;
     private int price;
     private String urlImageProd;
@@ -23,12 +24,7 @@ public class ProductInfo {
     private int orderId;
     private List<ProductSizeDto> listSize;
 
-    public ProductInfo() {
-
-    }
-
-    public ProductInfo(long id,String nameProduct,int price,String urlImageProd,String description,int orderId,String listSize) {
-        this.id = id;
+    public ProductInfo(String nameProduct,Integer price,String urlImageProd,String description,Integer orderId,Object listSize) {
         this.nameProduct = nameProduct;
         this.price = price;
         this.urlImageProd = urlImageProd;

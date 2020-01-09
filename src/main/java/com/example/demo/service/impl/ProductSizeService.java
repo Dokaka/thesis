@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class ProductSizeService implements IProductSizeSevice {
     @Autowired
     IProductSizeRepository productSizeRepository;
+
     @Override
     public ProductInfo getProductInfo(int productId){
         return productSizeRepository.getProductInfo(productId);

@@ -17,29 +17,17 @@ public class ProductEntity {
     @GeneratedValue
     @Column(nullable = false, unique = true)
     private Long id;
-    @Column(unique = true)
+    @Column(name = "name_product",unique = true)
     private String nameProduct;
+    @Column(name = "price")
     private int price;
+    @Column(name = "url_image_prod")
     private String urlImageProd;
+    @Column(name = "description")
     private String description;
+    @Column(name = "order_id")
     private int orderId;
-    private String listSize;
+//    @Column(name = "list_size")
+//    private String listSize;
 
-//
-//    @OneToMany(
-//            mappedBy = "product",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private List<ProductSizeEntity>listSizeProd = new ArrayList<>();
-//
-//    public void addSize(ProductSizeEntity size) {
-//        listSizeProd.add(size);
-//        size.set(this);
-//    }
-//
-//    public void removeSize(ProductSizeEntity size) {
-//        listSizeProd.remove(size);
-//        size.setProduct(null);
-//    }
 }

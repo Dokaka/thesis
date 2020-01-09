@@ -12,6 +12,4 @@ public class ProductDto {
     private String urlImageProd;
     private String description;
     private int orderId;
-    //private String productSize;
-    private String listSize;
 }

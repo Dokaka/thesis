@@ -37,15 +37,6 @@ public class ProductService implements IProductService {
         ProductEntity productEntity = new ProductEntity();
         BeanUtils.copyProperties(productDto,productEntity);
 
-        ProductSizeEntity productSizeEntity = new ProductSizeEntity();
-        productSizeEntity.setSize(42);
-
-        ProductSizeEntity productSizeEntity2 = new ProductSizeEntity();
-        productSizeEntity2.setSize(43);
-
-//        productEntity.addSize(productSizeEntity);
-//        productEntity.addSize(productSizeEntity2);
-
         ProductDto m_productDto = new ProductDto();
         BeanUtils.copyProperties(productRepository.save(productEntity),m_productDto);
 
