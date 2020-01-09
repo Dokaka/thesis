@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.NotificationDto;
+import com.example.demo.dto.TokenResponse;
 import com.example.demo.dto.UserDto;
 import com.example.demo.request.CreateUserRequest;
+import com.example.demo.request.LoginUserRequest;
 import com.example.demo.response.CreateUserResponse;
 import com.example.demo.service.IUserService;
 import io.swagger.annotations.Api;
@@ -11,9 +13,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -92,11 +96,19 @@ public class UserController {
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
 
-    @GetMapping("/login/{phone}/password/{password}")
-    public ResponseEntity<?> login(@PathVariable String phone,@PathVariable String password)
-    {
-        UserDto userDto = userService.login(phone,password);
-        return ResponseEntity.ok(userDto);
+//    @GetMapping("/login/{phone}/password/{password}")
+//    public ResponseEntity<?> login(@PathVariable String phone,@PathVariable String password)
+//    {
+//        UserDto userDto = userService.login(phone,password);
+//        return ResponseEntity.ok(userDto);
+//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid LoginUserRequest loginUserRequest) {
+        TokenResponse result = userService.login(loginUserRequest);
+        if (!result.getStatusCode().equals(HttpStatus.OK)) {
+            return ResponseEntity.status(result.getStatusCode()).body(result);
+        }
+        return ResponseEntity.ok(result);
     }
     @ApiOperation(value="Register by user", response = UserDto.class)
     @ApiResponses({

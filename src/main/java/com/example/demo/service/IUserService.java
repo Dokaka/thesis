@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.TokenResponse;
 import com.example.demo.dto.UserDto;
 import com.example.demo.request.CreateUserRequest;
+import com.example.demo.request.LoginUserRequest;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ public interface IUserService {
     UserDto createUser(UserDto userDto);
     void deleteUser(Long id);
     UserDto updateUser(CreateUserRequest createUserRequest, String fullname);
-    UserDto login(String phone, String password);
+    TokenResponse login(LoginUserRequest loginUserRequest);
     boolean checkUser(CreateUserRequest createUserRequest);
     UserDto registerUser(CreateUserRequest createUserRequest);
 }

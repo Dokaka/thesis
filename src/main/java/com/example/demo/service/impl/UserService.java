@@ -1,13 +1,18 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.TokenResponse;
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.exception.InternalServerException;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.request.CreateUserRequest;
+import com.example.demo.request.LoginUserRequest;
 import com.example.demo.service.IUserService;
+import com.example.demo.util.JwtUltis;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +43,9 @@ public class UserService implements IUserService {
     }
     @Override
     public UserDto createUser(UserDto userDto){
+//        String slat = "danghieu";
+//        String hasps = BCrypt.hashpw(userDto.getPassword());
+//        userDto.setPassword(hasps);
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userDto,userEntity);
         UserDto m_userDto = new UserDto();
@@ -76,20 +84,26 @@ public class UserService implements IUserService {
         BeanUtils.copyProperties(userRepository.save(userEntity),userDto);
         return userDto;
     }
-    @Override
-    public UserDto login(String phone, String password){
-        UserEntity userEntity = userRepository.findByPhone(phone);
-        UserDto userDto = new UserDto();
-        if(userEntity.getPhone().equals(phone) && userEntity.getPassword().equals(password)){
-            BeanUtils.copyProperties(userEntity,userDto);
-            return userDto;
-        }
-        else
-        {
-            throw new RuntimeException("Phone or Password is not exactly");
-        }
 
+public TokenResponse login(LoginUserRequest loginReqest) {
+    // Lấy thông tin user
+    UserEntity userEntity = userRepository.findByPhone(loginReqest.getPhone());
+    System.out.println("value of userEntity is: "+userEntity);
+    if (userEntity == null) {
+        return new TokenResponse("Phone does not exist in the system", "", HttpStatus.NOT_FOUND);
     }
+
+    // Kiểm tra password
+//    boolean result = BCrypt.checkpw(loginReqest.getPassword(),userEntity.getPassword());
+//    System.out.println("result is: "+result);
+//    if (!result) {
+//        return new TokenResponse("Password wrong", "", HttpStatus.BAD_REQUEST);
+//    }
+
+    String token = JwtUltis.generateToken(userEntity);
+    return new TokenResponse("Login success", token, HttpStatus.OK);
+}
+
     @Override
     public boolean checkUser(CreateUserRequest createUserRequest){
         UserEntity userEntity = userRepository.findByFullname(createUserRequest.getFullname());
