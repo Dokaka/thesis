@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ProductDto;
 import com.example.demo.dto.UserDto;
+import com.example.demo.entity.ProductSizeEntity;
+import com.example.demo.repository.IProductSizeRepository;
 import com.example.demo.request.CreateProductRequest;
 import com.example.demo.response.CreateProductResponse;
 import com.example.demo.service.IProductService;
@@ -24,6 +26,9 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private IProductService productService;
+
+    @Autowired
+    private IProductSizeRepository productSizeRepository;
 
     @ApiOperation(value = "Get list of products", response = ProductDto.class)
     @ApiResponses({
@@ -55,6 +60,14 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed");
 
         } else {
+//            ProductSizeEntity productSizeEntity1 = new ProductSizeEntity();
+//            productSizeEntity1.setSize(42);
+//
+//            ProductSizeEntity productSizeEntity2 = new ProductSizeEntity();
+//            productSizeEntity2.setSize(43);
+////            productSizeEntity1.setProductId(productDto.getId());
+//            productSizeRepository.save(productSizeEntity1);
+//            productSizeRepository.save(productSizeEntity2);
             CreateProductResponse returnValue = new CreateProductResponse();
             BeanUtils.copyProperties(createdProduct, returnValue);
 

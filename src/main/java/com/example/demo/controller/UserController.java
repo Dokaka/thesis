@@ -3,9 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.dto.NotificationDto;
 import com.example.demo.dto.TokenResponse;
 import com.example.demo.dto.UserDto;
+import com.example.demo.entity.UserEntity;
 import com.example.demo.request.CreateUserRequest;
 import com.example.demo.request.LoginUserRequest;
 import com.example.demo.response.CreateUserResponse;
+import com.example.demo.response.LoginUserResponse;
+import com.example.demo.response.RegisterUserResponse;
 import com.example.demo.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,19 +99,28 @@ public class UserController {
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
 
-//    @GetMapping("/login/{phone}/password/{password}")
-//    public ResponseEntity<?> login(@PathVariable String phone,@PathVariable String password)
-//    {
-//        UserDto userDto = userService.login(phone,password);
-//        return ResponseEntity.ok(userDto);
-//    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginUserRequest loginUserRequest) {
+        LoginUserResponse loginUserResponse = new LoginUserResponse();
+
         TokenResponse result = userService.login(loginUserRequest);
+        loginUserResponse.setTokenResponse(result);
         if (!result.getStatusCode().equals(HttpStatus.OK)) {
-            return ResponseEntity.status(result.getStatusCode()).body(result);
+
+            return ResponseEntity.status(result.getStatusCode()).body(loginUserResponse);
+
         }
-        return ResponseEntity.ok(result);
+        else {
+            UserDto userDto = userService.getUserByPhone(loginUserRequest.getPhone());
+            System.out.println("values of userDto is: "+userDto);
+            loginUserResponse.setAddress(userDto.getAddress());
+            loginUserResponse.setEmail(userDto.getEmail());
+            loginUserResponse.setPhone(userDto.getPhone());
+            loginUserResponse.setFullname(userDto.getFullname());
+            return ResponseEntity.ok(loginUserResponse);
+        }
+
     }
     @ApiOperation(value="Register by user", response = UserDto.class)
     @ApiResponses({
@@ -119,13 +131,22 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody CreateUserRequest createUserRequest){
+        RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         if(userService.checkUser(createUserRequest)){
-            CreateUserResponse createUserResponse = new CreateUserResponse();
-            BeanUtils.copyProperties(userService.registerUser(createUserRequest),createUserResponse);
-            return ResponseEntity.ok(createUserResponse);
+            //CreateUserResponse createUserResponse = new CreateUserResponse();
+
+            userService.registerUser(createUserRequest);
+            registerUserResponse.setMessageRegister("Register Succeed");
+            registerUserResponse.setStatusRegister(true);
+            //BeanUtils.copyProperties(userService.registerUser(createUserRequest),createUserResponse);
+            return ResponseEntity.ok(registerUserResponse);
         }
         else {
-            throw new RuntimeException("User is existed");
+//            throw new RuntimeException("User is existed");
+            registerUserResponse.setMessageRegister("User is existed");
+            registerUserResponse.setStatusRegister(false);
+            return ResponseEntity.ok(registerUserResponse);
+
         }
     }
 }

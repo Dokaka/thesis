@@ -7,6 +7,7 @@ import com.example.demo.entity.ProductEntity;
 import com.example.demo.entity.ProductSizeEntity;
 import com.example.demo.exception.InternalServerException;
 import com.example.demo.repository.IProductRepository;
+import com.example.demo.repository.IProductSizeRepository;
 import com.example.demo.service.IProductService;
 
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ProductService implements IProductService {
     @Autowired
     private IProductRepository productRepository;
+    @Autowired
+    private IProductSizeRepository productSizeRepository;
     @Override
     public List<ProductDto> getAllProducts(){
         List<ProductEntity> productEntityList = productRepository.findAll();
@@ -39,6 +42,20 @@ public class ProductService implements IProductService {
 
         ProductDto m_productDto = new ProductDto();
         BeanUtils.copyProperties(productRepository.save(productEntity),m_productDto);
+        // luu data vao bang size
+        //ProductEntity productEntity1 = productRepository.findByNameProduct(productEntity.getNameProduct());
+
+        ProductSizeEntity productSizeEntity1 = new ProductSizeEntity();
+        productSizeEntity1.setSize(42);
+        productSizeEntity1.setProductId(productEntity);
+        ProductSizeEntity productSizeEntity2 = new ProductSizeEntity();
+        productSizeEntity2.setSize(43);
+        productSizeEntity2.setProductId(productEntity);
+
+        productSizeRepository.save(productSizeEntity1);
+        productSizeRepository.save(productSizeEntity2);
+
+        //
 
         return m_productDto;
     }
