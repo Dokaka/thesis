@@ -66,7 +66,7 @@ public class ProductSizeEntity {
     @GeneratedValue
     @Column(name = "id")
     private long id;
-    private  int size;
+    private int size;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

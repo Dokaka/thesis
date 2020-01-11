@@ -41,23 +41,33 @@ public class OrderService implements IOrderService {
 
     @Override
     public OrderResponse createOrder(OrderRequest orderRequest){
-        ProductEntity productEntity = productRepository.findByNameProduct(orderRequest.getNameProduct());
-        System.out.println("hahahaha: "+productEntity.getPrice());
+        try{
+            ProductEntity productEntity = productRepository.findByNameProduct(orderRequest.getNameProduct());
+            System.out.println("hahahaha: "+productEntity.getPrice());
+            UserEntity userEntity = userRepository.findByPhone(orderRequest.getPhone());
+            OrderEntity orderEntity = new OrderEntity();
 
-        UserEntity userEntity = userRepository.findByFullname(orderRequest.getUsername());
-        OrderEntity orderEntity = new OrderEntity();
+            BeanUtils.copyProperties(orderRequest,orderEntity);
+            orderEntity.setProduct(productEntity);
+            orderEntity.setPrice(productEntity.getPrice());
+            System.out.println("orderEntity.getProductId(): "+orderEntity.getProduct());
+            orderEntity.setUser(userEntity);
+            System.out.println("orderEntity.getUserId(): "+orderEntity.getUser());
 
-        BeanUtils.copyProperties(orderRequest,orderEntity);
-        orderEntity.setProduct(productEntity);
-        orderEntity.setPrice(productEntity.getPrice());
-        System.out.println("orderEntity.getProductId(): "+orderEntity.getProduct());
-        orderEntity.setUser(userEntity);
-        System.out.println("orderEntity.getUserId(): "+orderEntity.getUser());
+            //System.out.println("orderEntity is: " + orderEntity);
 
-        //System.out.println("orderEntity is: " + orderEntity);
-
-        OrderResponse orderResponse = new OrderResponse();
-        BeanUtils.copyProperties(orderRepository.save(orderEntity),orderResponse);
-        return orderResponse;
+            orderRepository.save(orderEntity);
+            OrderResponse orderResponse = new OrderResponse();
+            //BeanUtils.copyProperties(orderRepository.save(orderEntity),orderResponse);
+            orderResponse.setMessage("Create order completely");
+            orderResponse.setStatus(true);
+            return orderResponse;
+        }
+        catch (Exception e){
+            OrderResponse orderResponse = new OrderResponse();
+            orderResponse.setMessage("Create order fail");
+            orderResponse.setStatus(false);
+            return orderResponse;
+        }
     }
 }

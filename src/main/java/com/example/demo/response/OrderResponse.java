@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class OrderResponse {
-    private String nameProduct;
-    private int size;
-
+    private String message;
+    private boolean status;
 }

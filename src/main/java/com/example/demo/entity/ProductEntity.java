@@ -21,9 +21,9 @@ public class ProductEntity {
     private String nameProduct;
     @Column(name = "price")
     private int price;
-    @Column(name = "url_image_prod")
+    @Column(name = "url_image_prod", length = 600)
     private String urlImageProd;
-    @Column(name = "description")
+    @Column(name = "description",length = 1000)
     private String description;
 //    @Column(name = "order_id")
 //    private int orderId;

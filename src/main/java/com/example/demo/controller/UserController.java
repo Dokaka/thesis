@@ -108,7 +108,7 @@ public class UserController {
         loginUserResponse.setTokenResponse(result);
         if (!result.getStatusCode().equals(HttpStatus.OK)) {
 
-            return ResponseEntity.status(result.getStatusCode()).body(loginUserResponse);
+            return ResponseEntity.status(result.getStatusCode()).body(result);
 
         }
         else {
