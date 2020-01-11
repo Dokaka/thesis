@@ -10,7 +10,7 @@ import java.util.List;
 public interface IUserService {
     List<UserDto> getAllUsers();
     UserDto getUserByPhone(String phone);
-    UserDto createUser(UserDto userDto);
+    UserDto createUser(CreateUserRequest createUserRequest);
     void deleteUser(Long id);
     UserDto updateUser(CreateUserRequest createUserRequest, String fullname);
     TokenResponse login(LoginUserRequest loginUserRequest);

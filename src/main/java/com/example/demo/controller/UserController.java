@@ -62,10 +62,10 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest){
-        UserDto userDTO = new UserDto();
-        BeanUtils.copyProperties(createUserRequest,userDTO);
+//        UserDto userDTO = new UserDto();
+//        BeanUtils.copyProperties(createUserRequest,userDTO);
         CreateUserResponse createUserResponse = new CreateUserResponse();
-        BeanUtils.copyProperties(userService.createUser(userDTO),createUserResponse);
+        BeanUtils.copyProperties(userService.createUser(createUserRequest),createUserResponse);
         return ResponseEntity.ok(createUserResponse);
     }
     @ApiOperation(value="Delete a user", response = UserDto.class)
@@ -135,7 +135,7 @@ public class UserController {
         if(userService.checkUser(createUserRequest)){
             //CreateUserResponse createUserResponse = new CreateUserResponse();
 
-            userService.registerUser(createUserRequest);
+            userService.createUser(createUserRequest);
             registerUserResponse.setMessageRegister("Register Succeed");
             registerUserResponse.setStatusRegister(true);
             //BeanUtils.copyProperties(userService.registerUser(createUserRequest),createUserResponse);
