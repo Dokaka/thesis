@@ -28,7 +28,7 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody @Valid OrderRequest orderRequest){
             OrderResponse orderResponse = orderService.createOrder(orderRequest);
             if(orderResponse.isStatus()){
-                return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
+                return ResponseEntity.ok(orderResponse);
             }
             else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(orderResponse);
