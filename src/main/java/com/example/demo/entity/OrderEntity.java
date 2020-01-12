@@ -44,7 +44,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "orders")
-public class OrderEntity {
+public class OrderEntity extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -52,6 +52,7 @@ public class OrderEntity {
     private String nameProduct;
     private int size;
     private int price;
+    private String orderAddress;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

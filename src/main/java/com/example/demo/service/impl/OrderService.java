@@ -42,26 +42,39 @@ public class OrderService implements IOrderService {
     @Override
     public OrderResponse createOrder(OrderRequest orderRequest){
         try{
-            ProductEntity productEntity = productRepository.findByNameProduct(orderRequest.getNameProduct());
-            System.out.println("hahahaha: "+productEntity.getPrice());
-            UserEntity userEntity = userRepository.findByPhone(orderRequest.getPhone());
-            OrderEntity orderEntity = new OrderEntity();
-
-            BeanUtils.copyProperties(orderRequest,orderEntity);
-            orderEntity.setProduct(productEntity);
-            orderEntity.setPrice(productEntity.getPrice());
-            System.out.println("orderEntity.getProductId(): "+orderEntity.getProduct());
-            orderEntity.setUser(userEntity);
-            System.out.println("orderEntity.getUserId(): "+orderEntity.getUser());
-
-            //System.out.println("orderEntity is: " + orderEntity);
-
-            orderRepository.save(orderEntity);
             OrderResponse orderResponse = new OrderResponse();
-            //BeanUtils.copyProperties(orderRepository.save(orderEntity),orderResponse);
-            orderResponse.setMessage("Create order completely");
-            orderResponse.setStatus(true);
-            return orderResponse;
+            ProductEntity productEntity = productRepository.findByNameProduct(orderRequest.getNameProduct());
+            UserEntity userEntity = userRepository.findByPhone(orderRequest.getPhone());
+            if(productEntity == null){
+                orderResponse.setMessage("Name of product is wrong");
+                orderResponse.setStatus(false);
+                return orderResponse;
+            }
+            else if(userEntity == null){
+                orderResponse.setMessage("Phone of user is wrong");
+                orderResponse.setStatus(false);
+                return orderResponse;
+            }
+            else if(orderRequest.getSize() > 45 || orderRequest.getSize() < 40 ){
+                orderResponse.setMessage("Don't have this size");
+                orderResponse.setStatus(false);
+                return orderResponse;
+            }
+            else {
+                OrderEntity orderEntity = new OrderEntity();
+                BeanUtils.copyProperties(orderRequest,orderEntity);
+                orderEntity.setProduct(productEntity);
+                orderEntity.setPrice(productEntity.getPrice());
+                System.out.println("orderEntity.getProductId(): "+orderEntity.getProduct());
+                orderEntity.setUser(userEntity);
+                System.out.println("orderEntity.getUserId(): "+orderEntity.getUser());
+                //System.out.println("orderEntity is: " + orderEntity);
+                orderRepository.save(orderEntity);
+                //BeanUtils.copyProperties(orderRepository.save(orderEntity),orderResponse);
+                orderResponse.setMessage("Create order completely");
+                orderResponse.setStatus(true);
+                return orderResponse;
+            }
         }
         catch (Exception e){
             OrderResponse orderResponse = new OrderResponse();

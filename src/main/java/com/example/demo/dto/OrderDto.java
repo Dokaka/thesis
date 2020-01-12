@@ -8,5 +8,6 @@ public class OrderDto {
     private String nameProduct;
     private int price;
     private int size;
+    private String orderAddress;
 
 }
