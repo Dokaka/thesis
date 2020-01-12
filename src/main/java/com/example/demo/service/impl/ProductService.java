@@ -8,6 +8,8 @@ import com.example.demo.entity.ProductSizeEntity;
 import com.example.demo.exception.InternalServerException;
 import com.example.demo.repository.IProductRepository;
 import com.example.demo.repository.IProductSizeRepository;
+import com.example.demo.request.UpdateProductRequest;
+import com.example.demo.response.UpdateProductResponse;
 import com.example.demo.service.IProductService;
 
 import org.springframework.beans.BeanUtils;
@@ -19,10 +21,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class ProductService implements IProductService {
+
     @Autowired
     private IProductRepository productRepository;
     @Autowired
     private IProductSizeRepository productSizeRepository;
+
     @Override
     public List<ProductDto> getAllProducts(){
         List<ProductEntity> productEntityList = productRepository.findAll();
@@ -34,6 +38,7 @@ public class ProductService implements IProductService {
         }
         return productDtoList;
     }
+
     @Override
     public ProductDto createProduct(ProductDto productDto){
 
@@ -64,11 +69,34 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDto getProductByName(String nameProduct){
-        ProductEntity productEntity = productRepository.findByNameProduct(nameProduct);
-        ProductDto productDto = new ProductDto();
-        BeanUtils.copyProperties(productEntity,productDto);
-        return productDto;
+        try{
+            ProductEntity productEntity = productRepository.findByNameProduct(nameProduct);
+            System.out.println("productDto: "+ productEntity);
+            ProductDto productDto = new ProductDto();
+            BeanUtils.copyProperties(productEntity,productDto);
+            System.out.println("productDto: "+ productDto);
+            return productDto;
+        }
+        catch (Exception e){
+            return null;
+        }
+
     }
 
-
+    @Override
+    public UpdateProductResponse updateProduct(UpdateProductRequest request, String nameProduct){
+        ProductEntity productEntity = productRepository.findByNameProduct(nameProduct);
+        if(productEntity == null ){
+            UpdateProductResponse updateProductResponse = new UpdateProductResponse();
+            updateProductResponse.setMessage("Update product failed");
+            return updateProductResponse;
+        }
+        else {
+            BeanUtils.copyProperties(request,productEntity);
+            productRepository.save(productEntity);
+            UpdateProductResponse updateProductResponse = new UpdateProductResponse();
+            updateProductResponse.setMessage("Update product completely");
+            return updateProductResponse;
+        }
+    }
 }

@@ -29,5 +29,11 @@ public class ProductEntity {
 //    private int orderId;
 //    @Column(name = "list_size")
 //    private String listSize;
+    @OneToMany(mappedBy = "productId",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<ProductSizeEntity> listSize;
+
+
 
 }

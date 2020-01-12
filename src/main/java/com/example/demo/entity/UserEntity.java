@@ -2,10 +2,8 @@ package com.example.demo.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity (name = "users")
@@ -21,4 +19,8 @@ public class UserEntity {
     private String email;
     private String address;
     private String password;
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<OrderEntity> listOrder;
 }

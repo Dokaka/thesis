@@ -19,10 +19,10 @@ public class ProductSizeService implements IProductSizeSevice {
     public ProductInfo getProductInfo(int productId){
         return productSizeRepository.getProductInfo(productId);
     }
+
     @Override
     public List<ProductInfo> getListProductInfo(){
         return productSizeRepository.getListProductInfo();
     }
-
 
 }

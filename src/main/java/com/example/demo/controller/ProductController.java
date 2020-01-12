@@ -5,7 +5,9 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.entity.ProductSizeEntity;
 import com.example.demo.repository.IProductSizeRepository;
 import com.example.demo.request.CreateProductRequest;
+import com.example.demo.request.UpdateProductRequest;
 import com.example.demo.response.CreateProductResponse;
+import com.example.demo.response.UpdateProductResponse;
 import com.example.demo.service.IProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +41,13 @@ public class ProductController {
     @GetMapping()
     public ResponseEntity<?> getAllProducts(){
         List<ProductDto> productDtoList = productService.getAllProducts();
-        return ResponseEntity.ok(productDtoList);
+        if(productDtoList == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+        }
+        else {
+            return ResponseEntity.ok(productDtoList);
+        }
+
     }
     @ApiOperation(value = "create a product", response = ProductDto.class)
     @ApiResponses({
@@ -57,17 +65,9 @@ public class ProductController {
 
         if (null == createdProduct) {
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
 
         } else {
-//            ProductSizeEntity productSizeEntity1 = new ProductSizeEntity();
-//            productSizeEntity1.setSize(42);
-//
-//            ProductSizeEntity productSizeEntity2 = new ProductSizeEntity();
-//            productSizeEntity2.setSize(43);
-////            productSizeEntity1.setProductId(productDto.getId());
-//            productSizeRepository.save(productSizeEntity1);
-//            productSizeRepository.save(productSizeEntity2);
             CreateProductResponse returnValue = new CreateProductResponse();
             BeanUtils.copyProperties(createdProduct, returnValue);
 
@@ -84,7 +84,23 @@ public class ProductController {
     @GetMapping("/{nameProduct}")
     public ResponseEntity<?> getProductByName(@PathVariable String nameProduct){
         ProductDto productDto = productService.getProductByName(nameProduct);
-        return ResponseEntity.ok(productDto);
+        if(productDto == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(" not found product");
+        }
+        else {
+            return ResponseEntity.ok(productDto);
+        }
+    }
+
+    @PutMapping("/{nameProduct}")
+    public ResponseEntity<?> updateProduct(@RequestBody @Valid UpdateProductRequest request,@PathVariable String nameProduct){
+        UpdateProductResponse updateProductResponse = productService.updateProduct(request,nameProduct);
+        if(updateProductResponse.getMessage()=="Update product failed"){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(updateProductResponse);
+        }
+        else {
+            return ResponseEntity.ok(updateProductResponse);
+        }
     }
 
 }

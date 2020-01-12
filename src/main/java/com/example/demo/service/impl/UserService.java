@@ -35,13 +35,21 @@ public class UserService implements IUserService {
         }
         return userDtoList;
     }
+
     @Override
     public UserDto getUserByPhone(String phone){
-        UserEntity userEntity = userRepository.findByPhone(phone);
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(userEntity,userDto);
-        return userDto;
+        try{
+            UserEntity userEntity = userRepository.findByPhone(phone);
+            UserDto userDto = new UserDto();
+            BeanUtils.copyProperties(userEntity,userDto);
+            return userDto;
+        }
+        catch (Exception e){
+            return null;
+        }
+
     }
+
     @Override
     public UserDto createUser(CreateUserRequest createUserRequest){
         UserEntity userEntity = UserMapper.toUser(createUserRequest);
@@ -49,6 +57,7 @@ public class UserService implements IUserService {
         BeanUtils.copyProperties(userRepository.save(userEntity),m_userDto);
         return m_userDto;
     }
+
     @Override
     public void deleteUser(Long id) {
         try {
@@ -57,6 +66,7 @@ public class UserService implements IUserService {
             throw new InternalServerException("Error when delete user information");
         }
     }
+
     @Override
     public UserDto updateUser(CreateUserRequest createUserRequest, String fullname){
         String updateFullname = createUserRequest.getFullname();
@@ -82,30 +92,28 @@ public class UserService implements IUserService {
         return userDto;
     }
 
-public TokenResponse login(LoginUserRequest loginReqest) {
-    // Lấy thông tin user
-    UserEntity userEntity = userRepository.findByPhone(loginReqest.getPhone());
-    System.out.println("value of userEntity is: "+userEntity);
-    if (userEntity == null) {
-        return new TokenResponse("Phone does not exist in the system", "", HttpStatus.NOT_FOUND);
-    }
+public TokenResponse login(LoginUserRequest loginRequest) {
+        // Get user information
+        UserEntity userEntity = userRepository.findByPhone(loginRequest.getPhone());
+        if (userEntity == null) { 
+            return new TokenResponse("Phone does not exist in the system", "", HttpStatus.NOT_FOUND);
+        }
 
-    // Kiểm tra password
-    boolean result = BCrypt.checkpw(loginReqest.getPassword(),userEntity.getPassword());
-    System.out.println("result is: "+result);
-    if (!result) {
-        return new TokenResponse("Password wrong", "", HttpStatus.BAD_REQUEST);
-    }
+        // Check password
+        boolean result = BCrypt.checkpw(loginRequest.getPassword(),userEntity.getPassword());
+        System.out.println("result is: "+result);
+        if (!result) {
+            return new TokenResponse("Password wrong", "", HttpStatus.BAD_REQUEST);
+        }
 
-    String token = JwtUltis.generateToken(userEntity);
-    return new TokenResponse("Login success", token, HttpStatus.OK);
-}
+        String token = JwtUltis.generateToken(userEntity);
+        return new TokenResponse("Login success", token, HttpStatus.OK);
+    }
 
     @Override
     public boolean checkUser(CreateUserRequest createUserRequest){
         UserEntity userEntity = userRepository.findByFullname(createUserRequest.getFullname());
-        if(userEntity == null)
-        {
+        if(userEntity == null) {
             return true;
         }
         else{

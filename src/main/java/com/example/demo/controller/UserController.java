@@ -41,18 +41,24 @@ public class UserController {
         List<UserDto> userDtoList = userService.getAllUsers();
         return ResponseEntity.ok(userDtoList);
     }
+
     @ApiOperation(value="Get a user by phone", response = UserDto.class)
     @ApiResponses({
             @ApiResponse(code = 400, message="Bad request"),
             @ApiResponse(code = 404, message="Not found"),
             @ApiResponse(code = 500, message="Internal Server Error"),
     })
-
     @GetMapping("/phone/{phone}")
     public ResponseEntity<?> getUserByPhone(@PathVariable String phone){
         UserDto userDto = userService.getUserByPhone(phone);
-        return ResponseEntity.ok(userDto);
+        if(userDto == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found user");
+        }
+        else {
+            return ResponseEntity.ok(userDto);
+        }
     }
+
     @ApiOperation(value="Create a user", response = UserDto.class)
     @ApiResponses({
             @ApiResponse(code = 400, message="Bad request"),
@@ -145,7 +151,7 @@ public class UserController {
 //            throw new RuntimeException("User is existed");
             registerUserResponse.setMessageRegister("User is existed");
             registerUserResponse.setStatusRegister(false);
-            return ResponseEntity.ok(registerUserResponse);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(registerUserResponse);
 
         }
     }
