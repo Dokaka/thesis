@@ -119,7 +119,7 @@ public class UserController {
         }
         else {
             UserDto userDto = userService.getUserByPhone(loginUserRequest.getPhone());
-            System.out.println("values of userDto is: "+userDto);
+            //System.out.println("values of userDto is: "+userDto);
             loginUserResponse.setAddress(userDto.getAddress());
             loginUserResponse.setEmail(userDto.getEmail());
             loginUserResponse.setPhone(userDto.getPhone());

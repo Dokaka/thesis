@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface IOrderService {
     List<OrderDto> getListOrderOfUser(long userId);
+    List<OrderDto> getListOrder();
     OrderResponse createOrder(OrderRequest orderRequest);
 }

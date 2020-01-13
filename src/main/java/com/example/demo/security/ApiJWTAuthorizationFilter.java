@@ -38,8 +38,8 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(Claims claims) {
-        // Get username
-        String user = claims.getSubject();
+        // Get phone of user
+        String phone = claims.getSubject();
         // Get role info
         ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
         // Convert role array to GrantedAuthority array and check authentication manager
@@ -50,9 +50,9 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
                 authorities.add(authority);
             }
         }
-        if (user != null) {
+        if (phone != null) {
             // Return Authentication object which has username, login info ,roles
-            return new UsernamePasswordAuthenticationToken(user, null, authorities);
+            return new UsernamePasswordAuthenticationToken(phone, null, authorities);
         }
         return null;
     }

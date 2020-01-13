@@ -44,6 +44,16 @@ public class OrderController {
         else {
             return ResponseEntity.ok(orderDtoList);
         }
-
+    }
+    @GetMapping("")
+    public ResponseEntity<?> getListOrder(){
+        List<OrderDto> orderDtoList = orderService.getListOrder();
+        System.out.println("orderDtoList: "+orderDtoList);
+        if(orderDtoList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("userId is wrong");
+        }
+        else {
+            return ResponseEntity.ok(orderDtoList);
+        }
     }
 }
