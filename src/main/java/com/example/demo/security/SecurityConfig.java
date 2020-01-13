@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .withUser("spring")
                 .password(passwordEncoder().encode("secret"))
-                .roles("USER");
+                .roles("CUSTOMER");
     }
 
     @Bean
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.GET, "/users").permitAll()
 //                .antMatchers(HttpMethod.GET, "/productSize").permitAll()
 //                .antMatchers(HttpMethod.POST, "/products").permitAll()
-                .antMatchers(HttpMethod.POST, "/users").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/users").hasRole("CUSTOMER")
                 .antMatchers("/api/test-security/profile").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

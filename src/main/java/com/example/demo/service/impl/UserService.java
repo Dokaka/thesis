@@ -8,11 +8,14 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.request.CreateUserRequest;
 import com.example.demo.request.LoginUserRequest;
+import com.example.demo.response.GetUserResponse;
 import com.example.demo.service.IUserService;
 import com.example.demo.util.JwtUltis;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +56,7 @@ public class UserService implements IUserService {
     @Override
     public UserDto createUser(CreateUserRequest createUserRequest){
         UserEntity userEntity = UserMapper.toUser(createUserRequest);
+        userEntity.setRole("CUSTOMER");
         UserDto m_userDto = new UserDto();
         BeanUtils.copyProperties(userRepository.save(userEntity),m_userDto);
         return m_userDto;
@@ -120,12 +124,24 @@ public TokenResponse login(LoginUserRequest loginRequest) {
             return false;
         }
     }
+
     @Override
     public UserDto registerUser(CreateUserRequest createUserRequest){
         UserEntity userEntity = new UserEntity();
+        userEntity.setRole("CUSTOMER");
         BeanUtils.copyProperties(createUserRequest,userEntity);
         UserDto m_userDto = new UserDto();
         BeanUtils.copyProperties(userRepository.save(userEntity),m_userDto);
         return m_userDto;
+    }
+
+    @Override
+    public GetUserResponse getCurrentUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String phone = (String) auth.getPrincipal();
+        UserEntity userEntity = userRepository.findByPhone(phone);
+        GetUserResponse userResponse = new GetUserResponse();
+        BeanUtils.copyProperties(userEntity,userResponse);
+        return userResponse;
     }
 }

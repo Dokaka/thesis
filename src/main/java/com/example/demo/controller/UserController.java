@@ -7,6 +7,7 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.request.CreateUserRequest;
 import com.example.demo.request.LoginUserRequest;
 import com.example.demo.response.CreateUserResponse;
+import com.example.demo.response.GetUserResponse;
 import com.example.demo.response.LoginUserResponse;
 import com.example.demo.response.RegisterUserResponse;
 import com.example.demo.service.IUserService;
@@ -153,6 +154,17 @@ public class UserController {
             registerUserResponse.setStatusRegister(false);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(registerUserResponse);
 
+        }
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<?> getCurrentUser(){
+        GetUserResponse userResponse = userService.getCurrentUser();
+        if(userResponse == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found user");
+        }
+        else {
+            return ResponseEntity.ok(userResponse);
         }
     }
 }

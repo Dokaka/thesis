@@ -4,6 +4,7 @@ import com.example.demo.dto.TokenResponse;
 import com.example.demo.dto.UserDto;
 import com.example.demo.request.CreateUserRequest;
 import com.example.demo.request.LoginUserRequest;
+import com.example.demo.response.GetUserResponse;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface IUserService {
     TokenResponse login(LoginUserRequest loginUserRequest);
     boolean checkUser(CreateUserRequest createUserRequest);
     UserDto registerUser(CreateUserRequest createUserRequest);
+    GetUserResponse getCurrentUser();
 }
