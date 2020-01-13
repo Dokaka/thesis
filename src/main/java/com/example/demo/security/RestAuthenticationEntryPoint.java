@@ -16,7 +16,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException) throws IOException {
-        // Với các request xác thực không thành công, trả về mã lỗi 401
+        // With the requests which need authenticate, if don't have token, return error code 401
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED");
     }
 }

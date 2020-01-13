@@ -12,5 +12,4 @@ public interface IProductSizeRepository extends CrudRepository<ProductSizeEntity
     ProductInfo getProductInfo(int productId);
     @Query(nativeQuery = true, name = "getListProductInfo")
     List<ProductInfo> getListProductInfo();
-
 }

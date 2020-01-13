@@ -15,8 +15,10 @@ public class NotificationEntity {
     @GeneratedValue
     @Column(nullable = false, unique = true)
     private Long id;
+
     @Column(nullable = false)
     private String title;
+
     @Column(nullable = false, length = 500)
     private String content;
 

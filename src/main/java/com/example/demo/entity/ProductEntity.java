@@ -1,12 +1,7 @@
 package com.example.demo.entity;
 
-import com.example.demo.dto.ProductInfo;
-import io.swagger.models.auth.In;
 import lombok.Data;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,23 +12,22 @@ public class ProductEntity {
     @GeneratedValue
     @Column(name = "id",nullable = false, unique = true)
     private Long id;
+
     @Column(name = "name_product",unique = true)
     private String nameProduct;
+
     @Column(name = "price")
     private int price;
+
     @Column(name = "url_image_prod", length = 600)
     private String urlImageProd;
+
     @Column(name = "description",length = 1000)
     private String description;
-//    @Column(name = "order_id")
-//    private int orderId;
-//    @Column(name = "list_size")
-//    private String listSize;
+
     @OneToMany(mappedBy = "productId",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<ProductSizeEntity> listSize;
-
-
 
 }

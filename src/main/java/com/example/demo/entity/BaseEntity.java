@@ -10,10 +10,12 @@ import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
+
 public abstract class BaseEntity {
     @Column(updatable = false,name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     @Column(updatable = false,name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;

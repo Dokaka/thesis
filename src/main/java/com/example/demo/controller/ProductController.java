@@ -60,17 +60,13 @@ public class ProductController {
 
         ProductDto productDto = new ProductDto();
         BeanUtils.copyProperties(request, productDto);
-
         ProductDto createdProduct = productService.createProduct(productDto);
 
         if (null == createdProduct) {
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
-
         } else {
             CreateProductResponse returnValue = new CreateProductResponse();
             BeanUtils.copyProperties(createdProduct, returnValue);
-
             return ResponseEntity.status(HttpStatus.CREATED).body("Created");
         }
     }

@@ -23,26 +23,26 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // Kiểm tra token
+        // Check token
         Claims claims = JwtUltis.verifyToken(request);
         if (claims == null) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Thêm object Authentication vào SecurityContext
-        // Controller có thể lấy ra thông tin user đang đăng nhập từ đây để sử dụng
+        // Add object Authentication to SecurityContext
+        // Controller can get user info, who is logging in, to use
         UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(claims);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(Claims claims) {
-        // Lấy thông tin username
+        // Get username
         String user = claims.getSubject();
-        // Lấy thông tin role
+        // Get role info
         ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
-        // Convert mảng role thành mảng GrantedAuthority để authentication manager kiểm tra
+        // Convert role array to GrantedAuthority array and check authentication manager
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
         if (roles != null) {
             for (String role : roles) {
@@ -51,7 +51,7 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
             }
         }
         if (user != null) {
-            // Trả về đối tượng Authentication chứa thông tin username, thông tin đăng nhập (cấu trúc struct tùy bạn, hiện tại đang để rỗng), tập quyền
+            // Return Authentication object which has username, login info ,roles
             return new UsernamePasswordAuthenticationToken(user, null, authorities);
         }
         return null;

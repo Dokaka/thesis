@@ -10,6 +10,5 @@ import java.util.List;
 
 @Repository
 public interface IOrderRepository extends CrudRepository<OrderEntity,Long> {
-//    @Query(nativeQuery = true, value = )
     List<OrderEntity> findAllByUserId(long userId);
 }
