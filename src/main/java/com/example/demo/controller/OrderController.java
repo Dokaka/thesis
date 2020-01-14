@@ -50,7 +50,7 @@ public class OrderController {
         List<OrderDto> orderDtoList = orderService.getListOrder();
         System.out.println("orderDtoList: "+orderDtoList);
         if(orderDtoList.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("userId is wrong");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("you didn't order");
         }
         else {
             return ResponseEntity.ok(orderDtoList);

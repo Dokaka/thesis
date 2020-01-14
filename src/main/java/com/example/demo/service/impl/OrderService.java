@@ -69,9 +69,7 @@ public class OrderService implements IOrderService {
                 System.out.println("orderEntity.getProductId(): " + orderEntity.getProduct());
                 orderEntity.setUser(userEntity);
                 System.out.println("orderEntity.getUserId(): " + orderEntity.getUser());
-                //System.out.println("orderEntity is: " + orderEntity);
                 orderRepository.save(orderEntity);
-                //BeanUtils.copyProperties(orderRepository.save(orderEntity),orderResponse);
                 orderResponse.setMessage("Create order completely");
                 orderResponse.setStatus(true);
                 return orderResponse;
