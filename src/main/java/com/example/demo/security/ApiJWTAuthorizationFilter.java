@@ -42,7 +42,7 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
         String phone = claims.getSubject();
         // Get role info
         ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
-        //System.out.println("roles is: "+roles);
+        System.out.println("roles is: "+roles);
         // Convert role array to GrantedAuthority array and check authentication manager
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
         if (roles != null) {

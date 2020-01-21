@@ -137,7 +137,7 @@ public class UserController {
     })
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody CreateUserRequest createUserRequest){
+    public ResponseEntity<?> registerUser(@RequestBody @Valid CreateUserRequest createUserRequest){
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         if(userService.checkUser(createUserRequest)){
             //CreateUserResponse createUserResponse = new CreateUserResponse();

@@ -26,10 +26,11 @@ public class JwtUltis {
     public static String generateToken(UserEntity userEntity) {
         Claims claims = Jwts.claims().setSubject(userEntity.getPhone());
         List<String> roles = new ArrayList<>();
-        //roles.add(userEntity.getRole());
+        roles.add(userEntity.getRole());
+
         // Thông tin lưu trữ trong JWT dạng json key value
         // Muốn lưu thêm thông tin khác thì cứ put vào
-        //claims.put("roles", roles);
+        claims.put("roles", roles);
         //claims.put("userid", user.getId());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + SecurityConstants.EXPIRATION);
